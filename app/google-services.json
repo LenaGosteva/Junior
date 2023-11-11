@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "220168828586",
+    "project_id": "junior-e9e5e",
+    "storage_bucket": "junior-e9e5e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220168828586:android:2caa5ec83ce58a412e82d3",
+        "android_client_info": {
+          "package_name": "com.example.junior"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQlmp5rikCqDe3FZGYsIIp6FUWeQMZJu4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
