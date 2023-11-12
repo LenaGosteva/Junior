@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.TitlePageFragment">
+
+    <TextView
+        android:id="@+id/warning_title_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="!Все поля на этой странице обязательные. Без их заполнения документ не сформируется"
+        android:textStyle="bold"
+        android:textColor="@color/purple_200"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/recycler_to_title_page"
+        android:layout_marginTop="20dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/warning_title_page"/>
+
+</RelativeLayout>

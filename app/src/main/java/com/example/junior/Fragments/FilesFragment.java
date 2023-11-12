@@ -1,18 +1,16 @@
-package com.example.junior.ui.gallery;
+package com.example.junior.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.example.junior.NewFileActivity;
+import com.example.junior.Activities.NewActivity;
 import com.example.junior.databinding.FragmentFilesBinding;
 
 
@@ -25,15 +23,14 @@ public class FilesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        binding.fab.setOnClickListener(sdf->{
-            startActivity(new Intent(getContext(), NewFileActivity.class));
+        binding.button.setOnClickListener(sdf->{
+            startActivity(new Intent(getContext(), NewActivity.class));
         });
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        GalleryViewModel galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
+
 
         binding = FragmentFilesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

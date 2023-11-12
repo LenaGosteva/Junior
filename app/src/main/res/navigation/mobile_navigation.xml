@@ -8,19 +8,19 @@
 
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.example.junior.ui.home.ProfileFragment"
+        android:name="com.example.junior.Fragments.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/nav_files"
-        android:name="com.example.junior.ui.gallery.FilesFragment"
+        android:name="com.example.junior.Fragments.FilesFragment"
         android:label="@string/menu_files"
         tools:layout="@layout/fragment_files" />
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.example.junior.ui.slideshow.SettingsFragment"
+        android:name="com.example.junior.Fragments.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="5dp"
+    android:maxHeight="200dp"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/type_of_field"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:textSize="18dp"
+        android:gravity="center_vertical"
+        android:textColor="@android:color/darker_gray"
+        android:text="Заголовок 2"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/text_of_field"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="15dp"
+            android:background="@color/null_color"
+            android:text="@string/ghu"/>
+    </ScrollView>
+
+</LinearLayout>

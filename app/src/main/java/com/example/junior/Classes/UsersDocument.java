@@ -1,9 +1,10 @@
-package com.example.junior;
+package com.example.junior.Classes;
 
 import java.util.HashMap;
 
 public class UsersDocument {
    public String nameOfDocument = "Документ";
+   public String pathOfDocument = "Документ";
    public String type = "Документ";
 
    public HashMap<String, String> mainInfo;
@@ -39,10 +40,27 @@ public class UsersDocument {
       this.mainInfo = new HashMap<>();
    }
 
-   public UsersDocument( String nameOfDocument, String type, HashMap<String, String>  mainInfo,HashMap<String, String> fields) {
+   public String getPathOfDocument() {
+      return pathOfDocument;
+   }
+
+   public void setPathOfDocument(String pathOfDocument) {
+      this.pathOfDocument = pathOfDocument;
+   }
+
+   public HashMap<String, String> getMainInfo() {
+      return mainInfo;
+   }
+
+   public void setMainInfo(HashMap<String, String> mainInfo) {
+      this.mainInfo = mainInfo;
+   }
+
+   public UsersDocument(String nameOfDocument, String type, HashMap<String, String>  mainInfo, HashMap<String, String> fields) {
       this.nameOfDocument = nameOfDocument;
       this.type = type;
       this.fields = fields;
       this.mainInfo = mainInfo;
+      this.pathOfDocument = nameOfDocument+".pdf";
    }
 }

@@ -1,4 +1,4 @@
-package com.example.junior;
+package com.example.junior.Classes;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -68,26 +68,28 @@ public class ConvertDocumentToPDF {
         for (String key : document.mainInfo.keySet()) {
             Paragraph writer = new Paragraph(document.mainInfo.get(key));
             switch (key) {
-                case "name":
-                case "type":
-                    setTextNameSettings(writer);
+                case "Заголовок":setTextNameSettings(writer);
                     documentPDF.add(writer);
                     break;
-                case "executor":
+                case "Тип документа":
+                    setTextTypeSettings(writer);
+                    documentPDF.add(writer);
+                    break;
+                case "Выполняющий":
                     writer = new Paragraph("Выполняет: "+writer.toString());
                     setPersonsSettings(writer);
                     documentPDF.add(writer);
                     break;
-                case "inspector":
+                case "Руководитель":
                     writer = new Paragraph("Руководитель: "+writer.toString());
                     setPersonsSettings(writer);
                     documentPDF.add(writer);
                     break;
-                case "place and year":
+                case "Место и год":
                     setPlaceAndYearSettings(writer);
                     documentPDF.add(writer);
                     break;
-                case "organisation":
+                case "Организация":
                     setTextOrganisationSettings(writer);
                     documentPDF.add(writer);
                     break;
@@ -120,6 +122,11 @@ public class ConvertDocumentToPDF {
         string.setFont(fontNameOfDocument);
         string.setAlignment(Element.ALIGN_CENTER);
     }
+    void setTextTypeSettings(Paragraph string) {
+        string = new Paragraph(string.toString().toUpperCase());
+        string.setFont(fontNameOfDocument);
+        string.setAlignment(Element.ALIGN_CENTER);
+    }
 
     void setPersonsSettings(Paragraph string) {
         string.setFont(fontTopic);
@@ -143,7 +150,10 @@ public class ConvertDocumentToPDF {
     }
 
     void openDocumentWithoutNewPage() throws IOException, DocumentException {
-        PdfWriter.getInstance(documentPDF, Files.newOutputStream(Paths.get(document.getNameOfDocument() + ".pdf")));
+        PdfWriter.getInstance(documentPDF,  Files.newOutputStream(Paths.get( document.getPathOfDocument())));
         documentPDF.open();
     }
+
+
+
 }
