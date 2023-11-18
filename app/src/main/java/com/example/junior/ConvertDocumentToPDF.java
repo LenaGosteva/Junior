@@ -1,4 +1,4 @@
-package com.example.junior.Classes;
+package com.example.junior;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -16,18 +16,22 @@ import java.nio.file.Paths;
 public class ConvertDocumentToPDF {
     public UsersDocument document;
 
-    Document documentPDF = new Document();
-    Font fontHeader = FontFactory.getFont(FontFactory.TIMES_BOLD, 24, BaseColor.BLACK);
-    Font fontNameOfDocument = FontFactory.getFont(FontFactory.TIMES_BOLD, 36, BaseColor.BLACK);
-    Font fontSubtitle = FontFactory.getFont(FontFactory.TIMES, 20, BaseColor.BLACK);
-    Font fontTopic = FontFactory.getFont(FontFactory.TIMES, 16, BaseColor.BLACK);
-    Font fontTopicBold = FontFactory.getFont(FontFactory.TIMES, 16, BaseColor.BLACK);
+    public ConvertDocumentToPDF(UsersDocument document) {
+        this.document = document;
+    }
 
-    Paragraph title;
-    Paragraph subtitle;
-    Paragraph topic;
+  public   Document documentPDF = new Document();
+  public Font fontHeader = FontFactory.getFont(FontFactory.TIMES_BOLD, 24, BaseColor.BLACK);
+  public   Font fontNameOfDocument = FontFactory.getFont(FontFactory.TIMES_BOLD, 36, BaseColor.BLACK);
+ public    Font fontSubtitle = FontFactory.getFont(FontFactory.TIMES, 20, BaseColor.BLACK);
+  public   Font fontTopic = FontFactory.getFont(FontFactory.TIMES, 16, BaseColor.BLACK);
+  public   Font fontTopicBold = FontFactory.getFont(FontFactory.TIMES, 16, BaseColor.BLACK);
 
-    void documentFieldsToPDF() throws IOException, DocumentException {
+   public Paragraph title;
+   public Paragraph subtitle;
+  public   Paragraph topic;
+
+    public void documentFieldsToPDF() throws IOException, DocumentException {
 //         PDDocument document = new PDDocument();
 //         PDPage page = new PDPage();
 //         document.addPage(page);
@@ -63,7 +67,7 @@ public class ConvertDocumentToPDF {
         documentPDF.close();
     }
 
-    void documentDoMainPage() throws DocumentException, IOException {
+    public  void documentDoMainPage() throws DocumentException, IOException {
         openDocumentWithNewPage();
         for (String key : document.mainInfo.keySet()) {
             Paragraph writer = new Paragraph(document.mainInfo.get(key));
@@ -76,12 +80,12 @@ public class ConvertDocumentToPDF {
                     documentPDF.add(writer);
                     break;
                 case "Выполняющий":
-                    writer = new Paragraph("Выполняет: "+writer.toString());
+                    writer = new Paragraph("Выполняет: "+ writer);
                     setPersonsSettings(writer);
                     documentPDF.add(writer);
                     break;
                 case "Руководитель":
-                    writer = new Paragraph("Руководитель: "+writer.toString());
+                    writer = new Paragraph("Руководитель: "+ writer);
                     setPersonsSettings(writer);
                     documentPDF.add(writer);
                     break;

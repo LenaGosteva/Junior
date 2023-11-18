@@ -1,4 +1,4 @@
-package com.example.junior.Fragments;
+package com.example.junior;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,19 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.junior.databinding.FragmentProfileBinding;
+import com.example.junior.databinding.FragmentSettingsBinding;
 
-public class ProfileFragment extends Fragment {
+public class SettingsFragment extends Fragment {
 
-    private FragmentProfileBinding binding;
+    private FragmentSettingsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        binding = FragmentProfileBinding.inflate(inflater, container, false);
+        binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
+        final TextView textView = binding.textSlideshow;
         return root;
     }
 
