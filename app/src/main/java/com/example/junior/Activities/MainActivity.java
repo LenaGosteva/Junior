@@ -1,8 +1,10 @@
-package com.example.junior;
+package com.example.junior.Activities;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.ThemedSpinnerAdapter;
 
+import com.example.junior.R;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.navigation.NavigationView;
 
@@ -21,14 +23,12 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
     GoogleSignInClient googleSignInClient;
-    AuthController controller = new AuthController();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
 //        GoogleSignInOptions gso = new
 //                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 //                .requestIdToken("220168828586-7e58dqb3ppnvep31i9tfn8d1aqerp5qb.apps.googleusercontent.com")
@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 //                        dialogInterface.dismiss();
 //                    }).create().show();
 //        }
-
         setSupportActionBar(binding.appBarMain.toolbar);
 
         DrawerLayout drawer = binding.drawerLayout;

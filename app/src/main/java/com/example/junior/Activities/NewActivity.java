@@ -1,4 +1,4 @@
-package com.example.junior;
+package com.example.junior.Activities;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.junior.Adapters.FieldsAdapter;
+import com.example.junior.Controllers.ConvertDocumentToPDF;
 import com.example.junior.databinding.ActivityNewBinding;
 import com.itextpdf.text.DocumentException;
 
@@ -22,7 +23,7 @@ public class NewActivity extends AppCompatActivity {
 
     private ActivityNewBinding binding;
     FieldsAdapter mainTextAdapter;
-    public UsersDocument document = new UsersDocument();
+    public FieldsAdapter.UsersDocument document = new FieldsAdapter.UsersDocument();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class NewActivity extends AppCompatActivity {
             binding.recyclerToTitlePage.setVisibility(binding.recyclerToTitlePage.getVisibility()==View.VISIBLE ? View.GONE:View.VISIBLE);
         });
         binding.save.setOnClickListener(fghjk -> {
-            document = new UsersDocument(!binding.textOfField.getText().toString().isEmpty() ?
+            document = new FieldsAdapter.UsersDocument(!binding.textOfField.getText().toString().isEmpty() ?
                     binding.textOfField.getText().toString() : "document " + Math.random(),
                     titlePAge, mainText);
             ConvertDocumentToPDF converter = new ConvertDocumentToPDF(document);

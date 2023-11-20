@@ -1,13 +1,16 @@
-package com.example.junior;
+package com.example.junior.Controllers;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.example.junior.Activities.App;
+import com.example.junior.Adapters.FieldsAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,22 +28,26 @@ public class FirebaseController {
     private GoogleSignIn client;
     GoogleSignInOptions gso;
     GoogleSignInClient googleSignInClient;
-    DatabaseReference database = FirebaseDatabase.getInstance("https://junior-e9e5e-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
-     StorageReference storage = FirebaseStorage.getInstance("gs://junior-e9e5e.appspot.com/").getReference();
+    DatabaseReference database;
+     StorageReference storage;
     // Create a storage reference from our app
     StorageReference storageRef;
     Activity activity;
 
-    public FirebaseController(Activity activity) {
-        this.auth = FirebaseAuth.getInstance();
+    public FirebaseController() {
+        FirebaseApp.initializeApp(App.getInstance());
+        this.auth = FirebaseAuth.getInstance(FirebaseApp.initializeApp(App.getInstance())
+);
         gso = new
                 GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("220168828586-7e58dqb3ppnvep31i9tfn8d1aqerp5qb.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
-        googleSignInClient = GoogleSignIn.getClient(activity, gso);
+        database = FirebaseDatabase.getInstance("https://junior-2752e-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
+        googleSignInClient = GoogleSignIn.getClient(App.getInstance(), gso);
+        storage = FirebaseStorage.getInstance("gs://junior-2752e.appspot.com").getReference();
     }
-    public void saveToDB(UsersDocument document,File file,  OnCompleteListener listener) throws FileNotFoundException {
+    public void saveToDB(FieldsAdapter.UsersDocument document, File file, OnCompleteListener listener) throws FileNotFoundException {
         if (isAuth()){
             database.child(auth.getUid()).child(document.getPathOfDocument()).child("titlePage").setValue(document.getMainInfo()).addOnCompleteListener(listener);
             database.child(auth.getUid()).child(document.getPathOfDocument()).child("mainText").setValue(document.getFields()).addOnCompleteListener(listener);

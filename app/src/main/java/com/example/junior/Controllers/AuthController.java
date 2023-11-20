@@ -1,4 +1,4 @@
-package com.example.junior;
+package com.example.junior.Controllers;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;

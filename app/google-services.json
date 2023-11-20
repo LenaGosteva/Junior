@@ -1,45 +1,26 @@
 {
   "project_info": {
-    "project_number": "220168828586",
-    "firebase_url": "https://junior-e9e5e-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "junior-e9e5e",
-    "storage_bucket": "junior-e9e5e.appspot.com"
+    "project_number": "1053327968619",
+    "project_id": "junior-2752e",
+    "storage_bucket": "junior-2752e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:220168828586:android:2caa5ec83ce58a412e82d3",
+        "mobilesdk_app_id": "1:1053327968619:android:d03f5c3703ae415872e42e",
         "android_client_info": {
           "package_name": "com.example.junior"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "220168828586-he81c1nqhve6ank92rjldecg7pa82ukq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.junior",
-            "certificate_hash": "96f6bcb40407fe63ec1678f85a36db4ff163bef4"
-          }
-        },
-        {
-          "client_id": "220168828586-7e58dqb3ppnvep31i9tfn8d1aqerp5qb.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAQlmp5rikCqDe3FZGYsIIp6FUWeQMZJu4"
+          "current_key": "AIzaSyBs_0vy7chZ2K0rwEhlAH24NPyJcnb_IVw"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "220168828586-7e58dqb3ppnvep31i9tfn8d1aqerp5qb.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
