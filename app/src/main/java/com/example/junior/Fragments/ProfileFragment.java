@@ -1,19 +1,30 @@
 package com.example.junior.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.junior.SharedPreferenses.DatabaseSP;
+import com.example.junior.Views.InputField;
 import com.example.junior.databinding.FragmentProfileBinding;
+import com.example.junior.Activities.App;
+
+import java.util.Date;
 
 public class ProfileFragment extends Fragment {
-
+DatabaseSP sharedPreferences;
     private FragmentProfileBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -22,13 +33,119 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        sharedPreferences = new DatabaseSP(getContext());
+        Log.e("DUFU", String.valueOf(sharedPreferences==null));
+        setHintAndText();
+        saveToSP();
+
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
         binding = null;
+    }
+
+    private void setHintAndText() {
+        binding.nameByDefault.setHint("Имя");
+        binding.nameByDefault.setText(App.getSharedPreferences().getName());
+        binding.teacherByDefault.setText(App.getSharedPreferences().getTeacher());
+        binding.yearByDefault.setText(App.getSharedPreferences().getYear());
+        binding.placeByDefault.setText(App.getSharedPreferences().getPlace());
+        binding.placeByDefault.setHint("Город");
+        binding.organizationByDefault.setText(App.getSharedPreferences().getOrganization());
+        binding.organizationByDefault.setHint("Организация");
+        binding.yearByDefault.setHint("Год исполнения");
+        binding.teacherByDefault.setHint("Проверяющий/руководитель");
+    }
+
+    private void saveToSP() {
+        binding.organizationByDefault.setListenerOfChanges(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                App.getSharedPreferences().saveOrganization(binding.organizationByDefault.getText());
+            }
+        });
+        binding.teacherByDefault.setListenerOfChanges(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                App.getSharedPreferences().saveYear(editable.toString());
+            }
+        });
+        binding.placeByDefault.setListenerOfChanges(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                App.getSharedPreferences().savePlace(editable.toString());
+            }
+        });
+        binding.teacherByDefault.setListenerOfChanges(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                App.getSharedPreferences().saveTeacher(editable.toString());
+            }
+        });
+        binding.nameByDefault.setListenerOfChanges(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                App.getSharedPreferences().saveName(editable.toString());
+            }
+        });
     }
 }

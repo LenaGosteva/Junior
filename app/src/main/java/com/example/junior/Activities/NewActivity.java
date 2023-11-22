@@ -33,13 +33,8 @@ public class NewActivity extends AppCompatActivity {
         binding.typeOfField.setText("Название документа");
         binding.textOfField.setHint("Введите название тут");
 
+doTitleListFull();
 
-        titlePAge.put("Заголовок", "");
-        titlePAge.put("Тип документа", "");
-        titlePAge.put("Руководитель", "");
-        titlePAge.put("Выполняющий", "");
-        titlePAge.put("Место и год", "");
-        titlePAge.put("Организация", "");
         mainText.put("Заголовок", "");
         mainText.put("Подзаголовок", "");
         mainText.put("Абзац", "");
@@ -95,10 +90,19 @@ public class NewActivity extends AppCompatActivity {
 
         });
 
-    }public  int randInt(int min, int max) {
+    }
+    public  int randInt(int min, int max) {
         Random rand = new Random();
 
         int randomNum = rand.nextInt((max - min) + 1) + min;
         return randomNum;
+    }
+    public void doTitleListFull(){
+        titlePAge.put("Заголовок", "");
+        titlePAge.put("Тип документа", "");
+        titlePAge.put("Руководитель", App.getSharedPreferences().getTeacher());
+        titlePAge.put("Выполняющий",App.getSharedPreferences().getName());
+        titlePAge.put("Место и год",App.getSharedPreferences().getPlace()+", "+App.getSharedPreferences().getYear());
+        titlePAge.put("Организация",App.getSharedPreferences().getOrganization());
     }
 }

@@ -49,7 +49,7 @@ public void addToList(String key, String value){
     @NonNull
     @Override
     public FieldsAdapter.FieldsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_to_new_text_field, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_input_field, parent, false);
 
         view.setLongClickable(true);
         return new FieldsAdapter.FieldsViewHolder(view);
