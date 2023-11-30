@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.junior.Adapters.FieldsAdapter;
+import com.example.junior.Classes.UsersDocument;
 import com.example.junior.databinding.ActivityNewBinding;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -50,7 +51,7 @@ public class NewActivity extends AppCompatActivity {
 
     private ActivityNewBinding binding;
     FieldsAdapter mainTextAdapter;
-    public FieldsAdapter.UsersDocument document = new FieldsAdapter.UsersDocument();
+    public UsersDocument document = new UsersDocument();
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
@@ -250,5 +251,12 @@ public class NewActivity extends AppCompatActivity {
             }
         }
         return dir;
+    }
+
+    @Override
+    protected void onStop() {
+        titlePAge = null;
+        mainText=null;
+        super.onStop();
     }
 }

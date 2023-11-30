@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.FilesFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_of_files"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button"
         android:layout_width="wrap_content"

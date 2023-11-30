@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import com.example.junior.Activities.App;
 import com.example.junior.Adapters.FieldsAdapter;
+import com.example.junior.Classes.UsersDocument;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -47,7 +48,7 @@ public class FirebaseController {
         googleSignInClient = GoogleSignIn.getClient(App.getInstance(), gso);
         storage = FirebaseStorage.getInstance("gs://junior-2752e.appspot.com").getReference();
     }
-    public void saveToDB(FieldsAdapter.UsersDocument document, File file, OnCompleteListener listener) throws FileNotFoundException {
+    public void saveToDB(UsersDocument document, File file, OnCompleteListener listener) throws FileNotFoundException {
         if (isAuth()){
             database.child(auth.getUid()).child(document.getPathOfDocument()).child("titlePage").setValue(document.getMainInfo()).addOnCompleteListener(listener);
             database.child(auth.getUid()).child(document.getPathOfDocument()).child("mainText").setValue(document.getFields()).addOnCompleteListener(listener);

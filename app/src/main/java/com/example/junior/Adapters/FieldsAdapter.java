@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class FieldsAdapter  extends RecyclerView.Adapter<FieldsAdapter.FieldsViewHolder>  {
+public class FieldsAdapter extends RecyclerView.Adapter<FieldsAdapter.FieldsViewHolder> {
 
     public HashMap<String, String> getList() {
         return list;
@@ -34,18 +34,20 @@ public class FieldsAdapter  extends RecyclerView.Adapter<FieldsAdapter.FieldsVie
 
     public final Activity activity;
 
-public void addToList(String key, String value){
-    list.put(key, value);
-    keys.add(key);
-    values.add(value);
-    notifyDataSetChanged();
-}
+    public void addToList(String key, String value) {
+        list.put(key, value);
+        keys.add(key);
+        values.add(value);
+        notifyDataSetChanged();
+    }
+
     public FieldsAdapter(HashMap<String, String> list, Activity activity) {
         this.list = list;
         keys.addAll(list.keySet());
         this.values.addAll(list.values());
         this.activity = activity;
     }
+
     @NonNull
     @Override
     public FieldsAdapter.FieldsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -59,12 +61,13 @@ public void addToList(String key, String value){
     public void onBindViewHolder(@NonNull FieldsAdapter.FieldsViewHolder holder, int position) {
 
 
-    if (keys.get(position).contains("Заголовок")) holder.inputLayout.setHint("Заголовок");
-   else if (keys.get(position).contains("Подзаголовок")) holder.inputLayout.setHint("Подзаголовок");
-    else if (keys.get(position).contains("Абзац")) holder.inputLayout.setHint("Абзац");
-    else holder.inputLayout.setHint(keys.get(position));
+        if (keys.get(position).contains("Заголовок")) holder.inputLayout.setHint("Заголовок");
+        else if (keys.get(position).contains("Подзаголовок"))
+            holder.inputLayout.setHint("Подзаголовок");
+        else if (keys.get(position).contains("Абзац")) holder.inputLayout.setHint("Абзац");
+        else holder.inputLayout.setHint(keys.get(position));
 
-    holder.input.setText(values.get(position));
+        holder.input.setText(values.get(position));
         int pos = position;
         holder.input.addTextChangedListener(new TextWatcher() {
             @Override
@@ -90,11 +93,11 @@ public void addToList(String key, String value){
     }
 
 
-
     public static class FieldsViewHolder extends RecyclerView.ViewHolder {
-//TextView type;
-EditText input;
-TextInputLayout inputLayout;
+        //TextView type;
+        EditText input;
+        TextInputLayout inputLayout;
+
         public FieldsViewHolder(View itemView) {
             super(itemView);
 //            type = itemView.findViewById(R.id.type_of_field);
@@ -105,68 +108,4 @@ TextInputLayout inputLayout;
         }
     }
 
-    public static class UsersDocument {
-       public String nameOfDocument = "Документ";
-       public String pathOfDocument = "Документ";
-       public String type = "Документ";
-
-       public HashMap<String, String> mainInfo;
-       public HashMap<String, String> fields;
-
-       public String getNameOfDocument() {
-          return nameOfDocument;
-       }
-
-       public void setNameOfDocument(String nameOfDocument) {
-          this.nameOfDocument = nameOfDocument;
-       }
-
-       public String getType() {
-          return type;
-       }
-
-       public void setType(String type) {
-          this.type = type;
-       }
-
-       public HashMap<String, String> getFields() {
-          return fields;
-       }
-
-       public void setFields(HashMap<String, String> fields) {
-          this.fields = fields;
-       }
-       public UsersDocument(){
-          this.type = "Документ";
-          this.nameOfDocument = "Документ";
-          this.fields = new HashMap<>();
-          this.mainInfo = new HashMap<>();
-       }
-
-       public String getPathOfDocument() {
-          return pathOfDocument;
-       }
-
-       public void setPathOfDocument(String pathOfDocument) {
-          this.pathOfDocument = pathOfDocument;
-       }
-
-       public HashMap<String, String> getMainInfo() {
-          return mainInfo;
-       }
-
-       public void setMainInfo(HashMap<String, String> mainInfo) {
-          this.mainInfo = mainInfo;
-       }
-
-       public UsersDocument(String nameOfDocument, HashMap<String, String>  mainInfo, HashMap<String, String> fields) {
-          this.nameOfDocument = nameOfDocument;
-          this.fields = fields;
-          this.mainInfo = mainInfo;
-          this.pathOfDocument = nameOfDocument+".pdf";
-       }public UsersDocument(String nameOfDocument, String type, HashMap<String, String>  mainInfo, HashMap<String, String> fields) {
-    this.type = type;
-
-       }
-    }
 }

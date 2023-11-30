@@ -55,10 +55,10 @@ DatabaseSP sharedPreferences;
 
     private void setHintAndText() {
         binding.nameByDefault.setHint("Имя");
-        binding.nameByDefault.setText(App.getSharedPreferences().getName());
-        binding.teacherByDefault.setText(App.getSharedPreferences().getTeacher());
-        binding.yearByDefault.setText(App.getSharedPreferences().getYear());
-        binding.placeByDefault.setText(App.getSharedPreferences().getPlace());
+        binding.nameByDefaultInput.setText(App.getSharedPreferences().getName());
+        binding.teacherByDefaultInput.setText(App.getSharedPreferences().getTeacher());
+        binding.yearByDefaultInput.setText(App.getSharedPreferences().getYear());
+        binding.placeByDefaultInput.setText(App.getSharedPreferences().getPlace());
         binding.placeByDefault.setHint("Город");
         binding.organizationByDefaultInput.setText(App.getSharedPreferences().getOrganization());
         binding.organizationByDefault.setHint("Организация");
@@ -83,39 +83,7 @@ DatabaseSP sharedPreferences;
                 App.getSharedPreferences().saveOrganization(editable.toString());
             }
         });
-        binding.teacherByDefault.setListenerOfChanges(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                App.getSharedPreferences().saveYear(editable.toString());
-            }
-        });
-        binding.placeByDefault.setListenerOfChanges(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                App.getSharedPreferences().savePlace(editable.toString());
-            }
-        });
-        binding.teacherByDefault.setListenerOfChanges(new TextWatcher() {
+        binding.teacherByDefaultInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -131,7 +99,39 @@ DatabaseSP sharedPreferences;
                 App.getSharedPreferences().saveTeacher(editable.toString());
             }
         });
-        binding.nameByDefault.setListenerOfChanges(new TextWatcher() {
+        binding.placeByDefaultInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                App.getSharedPreferences().savePlace(editable.toString());
+            }
+        });
+        binding.yearByDefaultInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                App.getSharedPreferences().saveYear(editable.toString());
+            }
+        });
+        binding.nameByDefaultInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 

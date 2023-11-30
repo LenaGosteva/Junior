@@ -1,6 +1,7 @@
 package com.example.junior.Controllers;
 
 import com.example.junior.Adapters.FieldsAdapter;
+import com.example.junior.Classes.UsersDocument;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -15,9 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class ConvertDocumentToPDF {
-    public FieldsAdapter.UsersDocument document;
+    public UsersDocument document;
 
-    public ConvertDocumentToPDF(FieldsAdapter.UsersDocument document) {
+    public ConvertDocumentToPDF(UsersDocument document) {
         this.document = document;
     }
 

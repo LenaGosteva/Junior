@@ -40,7 +40,7 @@ public class DatabaseSP {
         return storage.getString(PLACE_SP_NAME, "");
     }public void saveTeacher(String  name) {
         SharedPreferences.Editor editor = storage.edit();
-        editor.putString(PLACE_SP_NAME, name);
+        editor.putString(TEACHER_SP_NAME, name);
         editor.apply();
     }
 
@@ -48,7 +48,7 @@ public class DatabaseSP {
         return storage.getString(TEACHER_SP_NAME, "");
     }public void saveYear(String  name) {
         SharedPreferences.Editor editor = storage.edit();
-        editor.putString(PLACE_SP_NAME, name);
+        editor.putString(YEAR_SP_NAME, name);
         editor.apply();
     }
 
