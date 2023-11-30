@@ -9,18 +9,24 @@
     <ImageButton
         android:id="@+id/save"
         android:layout_width="50dp"
+        android:clickable="true"
         android:layout_height="50dp"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:backgroundTint="@color/null_color"
+        android:src="@drawable/icon_save_pdf" />
 
     <ImageButton
         android:id="@+id/viewPDfF"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_toLeftOf="@+id/save" />
+        android:layout_toLeftOf="@+id/save"
+        android:backgroundTint="@color/null_color"
+
+        android:src="@drawable/icon_preview_pdf" />
 
     <LinearLayout
-        android:layout_width="match_parent"
         android:id="@+id/dop"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/save"
         android:layout_margin="5dp"
@@ -51,44 +57,63 @@
 
     </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_below="@+id/dop"
-                android:id="@+id/title_r_t"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:layout_centerInParent="true"
-                android:text="Титульная страница" />
-
-    <ImageButton
-        android:layout_width="50dp"
+    <TextView
+        android:id="@+id/title_r_t"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-android:layout_below="@+id/dop"
-        android:id="@+id/title_recycler_up_down"
-        android:layout_alignParentRight="true" />
+        android:layout_below="@+id/dop"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="Титульная страница"
+        android:textAlignment="center" />
+
+    <ViewSwitcher
+        android:id="@+id/switcher_drop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dop"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="4dp">
+
+        <ImageButton
+            android:id="@+id/title_recycler_up"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/null_color"
+            android:src="@drawable/icon_drop_up" />
+        <ImageButton
+            android:id="@+id/title_recycler_down"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+
+            android:backgroundTint="@color/null_color"
+            android:src="@drawable/icon_drop_down" />
+
+
+    </ViewSwitcher>
 
     <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_to_title_page"
-                android:layout_width="match_parent"
-                android:layout_below="@+id/title_r_t"
-                android:layout_height="wrap_content"/>
+        android:id="@+id/recycler_to_title_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_r_t" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/main_r_t"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:layout_centerInParent="true"
-                android:layout_below="@+id/recycler_to_title_page"
-                android:text="Основной текст" />
+    <TextView
+        android:id="@+id/main_r_t"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/recycler_to_title_page"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="Основной текст"
+        android:textAlignment="center" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_to_main_text"
-                android:layout_width="match_parent"
-                android:layout_below="@+id/main_r_t"
-                android:layout_height="wrap_content"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_to_main_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_r_t" />
 
     <LinearLayout
         android:id="@+id/layout_add_header"

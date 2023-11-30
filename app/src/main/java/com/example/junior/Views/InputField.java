@@ -62,4 +62,8 @@ public class InputField extends LinearLayout {
     public void setListenerOfChanges(TextWatcher watcher){
         binding.textInputOfField.addTextChangedListener(watcher);
     }
+
+    @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+binding.textInputOfField.setOnClickListener(l);    }
 }

@@ -39,7 +39,7 @@ DatabaseSP sharedPreferences;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        sharedPreferences = new DatabaseSP(getContext());
+        sharedPreferences =App.getSharedPreferences();
         Log.e("DUFU", String.valueOf(sharedPreferences==null));
         setHintAndText();
         saveToSP();
@@ -60,14 +60,14 @@ DatabaseSP sharedPreferences;
         binding.yearByDefault.setText(App.getSharedPreferences().getYear());
         binding.placeByDefault.setText(App.getSharedPreferences().getPlace());
         binding.placeByDefault.setHint("Город");
-        binding.organizationByDefault.setText(App.getSharedPreferences().getOrganization());
+        binding.organizationByDefaultInput.setText(App.getSharedPreferences().getOrganization());
         binding.organizationByDefault.setHint("Организация");
         binding.yearByDefault.setHint("Год исполнения");
         binding.teacherByDefault.setHint("Проверяющий/руководитель");
     }
 
     private void saveToSP() {
-        binding.organizationByDefault.setListenerOfChanges(new TextWatcher() {
+        binding.organizationByDefaultInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -80,7 +80,7 @@ DatabaseSP sharedPreferences;
 
             @Override
             public void afterTextChanged(Editable editable) {
-                App.getSharedPreferences().saveOrganization(binding.organizationByDefault.getText());
+                App.getSharedPreferences().saveOrganization(editable.toString());
             }
         });
         binding.teacherByDefault.setListenerOfChanges(new TextWatcher() {

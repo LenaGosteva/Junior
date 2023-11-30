@@ -21,7 +21,11 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:preserveLegacyExternalStorage="true"
+
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
+    android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Junior"
         tools:targetApi="31">
