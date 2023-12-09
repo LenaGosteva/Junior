@@ -4,6 +4,7 @@ import static android.os.Environment.DIRECTORY_DOCUMENTS;
 import static android.os.Environment.getExternalStorageDirectory;
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,12 +25,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.junior.Adapters.FieldsAdapter;
 import com.example.junior.Classes.UsersDocument;
 import com.example.junior.databinding.ActivityNewBinding;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfBody;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.pdf.PdfDocument; // IMPORTANT!!!
+import com.itextpdf.kernel.pdf.PdfWriter; // IMPORTANT!!!
+import com.itextpdf.layout.Document; // IMPORTANT!!!
+import com.itextpdf.layout.element.Paragraph; // IMPORTANT!!!
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -99,29 +100,8 @@ public class NewActivity extends AppCompatActivity {
 //            } catch (IOException e) {
 //                throw new RuntimeException(e);
 //            }
+                    savePDF("0hohoh","yguighouhoidgfhjkll,gobhphjp kg9jho");
 
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-
-                if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
-                        &&
-                        checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
-                        &&
-                        checkSelfPermission(Manifest.permission.MANAGE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                    String[] permissionsW = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                    String[] permissionsR = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                    String[] permissionsM = {Manifest.permission.MANAGE_EXTERNAL_STORAGE};
-                    requestPermissions(permissionsW, STORAGE_CODE);
-                    requestPermissions(permissionsR, STORAGE_CODE);
-                    requestPermissions(permissionsM, STORAGE_CODE);
-                } else {
-                    savePDF("yguighouhoidgfhjkll,gobhphjp kg9jho");
-                    Log.e("PDFCreator", "if savePDF");
-                }
-            } else {
-                Log.e("PDFCreator", "else savePDF");
-
-                savePDF("yguighouhoiu67d57tfyiguohipjk[nph7ihphjp kg9jho");
-            }
 
 
         });
@@ -211,24 +191,34 @@ public class NewActivity extends AppCompatActivity {
 //            doc.close();
 //        }
 //    }
-    public void savePDF(String string){
+    public void savePDF(String fileName, String title) {
+        File file = new File(getExternalFilesDir(null), fileName + ".pdf");
 
+        try {
+            PdfDocument pdf = new PdfDocument(new PdfWriter(file));
+            Document document = new Document(pdf);
+
+            // 1. greeting
+            Paragraph greeting = new Paragraph("Hello, friend. I am MR.ROBOT");
+            greeting.setFontColor(new DeviceRgb(255, 37, 0));
+            document.add(greeting);
+
+            // 2.some text
+            Paragraph someText1 = new Paragraph(title);
+            someText1.setFontColor(new DeviceRgb(0, 73, 255));
+            document.add(someText1);
+
+//            // 3. image
+//            document.add(new Image());
+
+            document.close();
+
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();        }
+
+        Toast.makeText(this, "Your PDF file is saved!", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResult) {
-        switch (requestCode) {
-            case STORAGE_CODE:
-                if (grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
-                    savePDF("");
-
-                } else {
-                    Toast.makeText(this, "Permission denied...", Toast.LENGTH_SHORT).show();
-                }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResult);
-
-    }
     public static File commonDocumentDirPath(String FolderName)
     {
         File dir = null;
