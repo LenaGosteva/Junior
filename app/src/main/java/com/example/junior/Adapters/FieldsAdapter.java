@@ -83,6 +83,7 @@ public class FieldsAdapter extends RecyclerView.Adapter<FieldsAdapter.FieldsView
             @Override
             public void afterTextChanged(Editable editable) {
                 values.set(pos, editable.toString());
+                list.put(keys.get(position), values.get(position));
             }
         });
     }
@@ -108,4 +109,23 @@ public class FieldsAdapter extends RecyclerView.Adapter<FieldsAdapter.FieldsView
         }
     }
 
+    public List<String> getKeys() {
+        return keys;
+    }
+
+    public void setKeys(List<String> keys) {
+        this.keys = keys;
+    }
+
+    public List<String> getValues() {
+        return values;
+    }
+
+    public void setValues(List<String> values) {
+        this.values = values;
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
 }

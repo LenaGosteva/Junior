@@ -1,9 +1,14 @@
 package com.example.junior.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.ThemedSpinnerAdapter;
 
+import com.example.junior.Controllers.AuthController;
 import com.example.junior.R;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.navigation.NavigationView;
@@ -18,9 +23,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.junior.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    File file;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,22 +63,33 @@ public class MainActivity extends AppCompatActivity {
 //                        dialogInterface.dismiss();
 //                    }).create().show();
 //        }
-        setSupportActionBar(binding.appBarMain.toolbar);
+        if (new AuthController().isAuth()) {
 
-        DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_profile, R.id.nav_files, R.id.nav_settings)
-                .setOpenableLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+            setSupportActionBar(binding.appBarMain.toolbar);
+
+            DrawerLayout drawer = binding.drawerLayout;
+            NavigationView navigationView = binding.navView;
+//            TextView textView = navigationView.findViewById(R.id.textView);
 
 
+            mAppBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.nav_profile, R.id.nav_files, R.id.nav_settings)
+                    .setOpenableLayout(drawer)
+                    .build();
 
+//            textView.setText(new  AuthController().getUser().getEmail());
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+            NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+            NavigationUI.setupWithNavController(navigationView, navController);
+
+
+
+        }
+        else {
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+
+        }
     }
-
 
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.junior.Fragments;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +18,9 @@ import com.example.junior.Adapters.FilesAdapter;
 import com.example.junior.Classes.UsersDocument;
 import com.example.junior.databinding.FragmentFilesBinding;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -32,12 +35,12 @@ public class FilesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding.button.setOnClickListener(sdf->{
             startActivity(new Intent(getContext(), NewActivity.class));
-        }); listOfNames.add("IYfoughijo");
-        listOfNames.add("IYfoughijo");
-        listOfNames.add("IYfoughijo");
+        });
+       listOfNames = Arrays.asList(new File(getContext().getExternalFilesDir(null).toURI()).list())==null?
+       new ArrayList<>(): Arrays.asList(new File(getContext().getExternalFilesDir(null).toURI()).list());
 
         binding.recyclerOfFiles.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerOfFiles.setAdapter(new FilesAdapter(listOfNames));
+        binding.recyclerOfFiles.setAdapter(new FilesAdapter(listOfNames,getActivity()));
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,

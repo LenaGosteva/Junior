@@ -6,6 +6,7 @@ import static android.os.Environment.getExternalStoragePublicDirectory;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.junior.Adapters.FieldsAdapter;
 import com.example.junior.Classes.UsersDocument;
+import com.example.junior.Controllers.ConvertDocumentToPDF;
 import com.example.junior.databinding.ActivityNewBinding;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.pdf.PdfDocument; // IMPORTANT!!!
@@ -88,19 +90,11 @@ public class NewActivity extends AppCompatActivity {
             binding.switcherDrop.showNext();
         });
         binding.save.setOnClickListener(fghjk -> {
-//            document = new FieldsAdapter.UsersDocument(!binding.textOfField.getText().toString().isEmpty() ?
-//                    binding.textOfField.getText().toString() : "document " + Math.random(),
-//                    titlePAge, mainText);
-//            ConvertDocumentToPDF converter = new ConvertDocumentToPDF(document);
-//            try {
-//                converter.documentDoMainPage();
-////                converter.documentFieldsToPDF();
-//            } catch (DocumentException e) {
-//                throw new RuntimeException(e);
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-                    savePDF("0hohoh","yguighouhoidgfhjkll,gobhphjp kg9jho");
+            document = new UsersDocument(!binding.textOfField.getText().toString().isEmpty() ?
+                    binding.textOfField.getText().toString() : "document " + Math.random(),
+                    titleAdapter.getList(), mainTextAdapter.getList());
+
+                    savePDF(document, document.nameOfDocument,"yguighouhoidgfhjkll,gobhphjp kg9jho");
 
 
 
@@ -149,48 +143,6 @@ public class NewActivity extends AppCompatActivity {
         titlePAge.put("Место и год", App.getSharedPreferences().getPlace() + App.getSharedPreferences().getYear());
         titlePAge.put("Организация", App.getSharedPreferences().getOrganization());
     }
-
-    // Method for creating a pdf file from text, saving it then opening it for display
-//    public void savePDF(String text) {
-//
-//        Toast.makeText(this, "strdyfugihojpk[", Toast.LENGTH_SHORT).show();
-//        Document doc = new Document();
-//
-////        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-////            String file = "storage/emulated/0/Android/data/org.junior/files/Junior" + "/" + new SimpleDateFormat("yyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis()) + ".pdf";
-//        //        String fileName = new SimpleDateFormat("yyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis()) + ".pdf";
-//        String path = getExternalStorageDirectory()+"/";
-//
-//        String fileName = "fugjdkk.pdf";
-//        File file = new File(path+fileName);
-//        try {
-//            File dir = new File(path);
-//            if (!dir.exists()) {
-//                dir.createNewFile();
-//            }
-//            file.createNewFile();
-//
-//            PdfWriter.getInstance(doc, new FileOutputStream(fileName));
-//            doc.open();
-//            if (doc.isOpen()) Toast.makeText(this, "IsOpen", Toast.LENGTH_SHORT).show();
-//            Paragraph p1 = new Paragraph(text);
-//            Font paraFont = FontFactory.getFont(FontFactory.TIMES_BOLD, 36, BaseColor.BLACK);
-//            p1.setAlignment(Paragraph.ALIGN_CENTER);
-//            p1.setFont(paraFont);
-//            doc.add(p1);
-//
-//
-//        } catch (DocumentException de) {
-//            Log.e("PDFCreator", "DocumentException:" + de);
-//        } catch (IOException e) {
-//            Log.e("PDFCreator", "ioException:" + e);
-//            file.mkdir();
-//
-//
-//        } finally {
-//            doc.close();
-//        }
-//    }
     public void savePDF(String fileName, String title) {
         File file = new File(getExternalFilesDir(null), fileName + ".pdf");
 
@@ -218,29 +170,47 @@ public class NewActivity extends AppCompatActivity {
 
         Toast.makeText(this, "Your PDF file is saved!", Toast.LENGTH_SHORT).show();
     }
+    public void savePDF(UsersDocument doc, String fileName, String title) {
+        File file = new File(getExternalFilesDir(null), fileName + ".pdf");
+        Log.e("KJGih", doc.getFields().values().toString());
 
-    public static File commonDocumentDirPath(String FolderName)
-    {
-        File dir = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-        {
-            dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/" + FolderName);
-        }
-        else
-        {
-            dir = new File(getExternalStorageDirectory() + "/" + FolderName);
-        }
-        // Make sure the path directory exists.
-        if (!dir.exists())
-        {
-            // Make it, if it doesn't exit
-            boolean success = dir.mkdirs();
-            if (!success)
-            {
-                dir = null;
+        try {
+            PdfDocument pdf = new PdfDocument(new PdfWriter(file));
+            Document document = new Document(pdf);
+            for (String s: doc.getFields().values()) {
+                Paragraph p = new Paragraph(s);
+                p.setFontColor(new DeviceRgb(299, 0, 66));
+                document.add(p);
             }
+
+            document.close();
+
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        Log.e("KJGih", e.getMessage());
         }
-        return dir;
+
+        Toast.makeText(this, "Your PDF file is saved!", Toast.LENGTH_SHORT).show();
+    }
+    public void savePDFGson(UsersDocument doc, String fileName) {
+        File file = new File(getExternalFilesDir(null), fileName + "_json.pdf");
+        Log.e("KJGih", doc.getFields().values().toString());
+
+        try {
+            PdfDocument pdf = new PdfDocument(new PdfWriter(file));
+            Document document = new Document(pdf);
+            ;
+                Paragraph p = new Paragraph(App.gson.toJson(doc));
+                document.add(p);
+
+            document.close();
+
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        Log.e("KJGih", e.getMessage());
+        }
+
+        Toast.makeText(this, "Your PDF file is saved!", Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -8,6 +8,7 @@ import androidx.room.Database;
 
 import com.example.junior.Controllers.FirebaseController;
 import com.example.junior.SharedPreferenses.DatabaseSP;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 
@@ -27,6 +28,7 @@ public class App extends Application {
     public static final String TEACHER_SP_NAME = "ur sp name";
     public static final String YEAR_SP_NAME = "i sp name";
     public static final String ORG_SP_NAME = "i i;sp name";
+    public static final String EXTRA_TO_SEE_DOCUMENT = "i gouhji;sp name";
     public static DatabaseSP sharedPreferences;
     public static Context instance;
     private App inst = this;
@@ -64,6 +66,7 @@ public class App extends Application {
     public static void setDatabase(Database database) {
         App.database = database;
     }
+    public static Gson gson = new Gson().newBuilder().create();
 
     @Override
     public void onCreate() {
