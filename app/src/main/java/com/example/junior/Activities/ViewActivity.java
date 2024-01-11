@@ -8,6 +8,11 @@ import android.util.Log;
 
 import com.example.junior.R;
 import com.example.junior.databinding.ActivityViewBinding;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class ViewActivity extends AppCompatActivity {
 
@@ -16,6 +21,7 @@ public class ViewActivity extends AppCompatActivity {
     private Bundle bundle;
 
     private Uri fileUri;
+    private String fileUriS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +36,11 @@ public class ViewActivity extends AppCompatActivity {
 
         Log.i("extra2", fileUri.toString());
         if (fileUri != null) {
-            binding.pdfView.fromUri(fileUri).load();
+
+                      binding.pdfView.fromUri(fileUri).load();
+
+
+
         }
     }
 }

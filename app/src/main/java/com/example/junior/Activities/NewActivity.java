@@ -37,6 +37,7 @@ import com.google.android.gms.tasks.Task;
 import com.itextpdf.kernel.colors.DeviceRgb;
 
 import com.itextpdf.kernel.pdf.PdfDocument; // IMPORTANT!!!
+import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfWriter; // IMPORTANT!!!
 import com.itextpdf.layout.Document; // IMPORTANT!!!
 import com.itextpdf.layout.element.Paragraph; // IMPORTANT!!!
@@ -160,18 +161,45 @@ public class NewActivity extends AppCompatActivity {
     }
 
     public void savePDF(UsersDocument doc, String fileName) {
-        File file1 = new File(getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/Junior/Documents/pdf/");
-
-        file = new File(file1, fileName + ".pdf");
+        file = new File(getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), fileName + ".pdf");
         Log.e("KJGih", doc.getFields().values().toString());
 
         try {
             PdfDocument pdf = new PdfDocument(new PdfWriter(file));
             Document document = new Document(pdf);
-            for (String s : doc.getFields().values()) {
-                Paragraph p = new Paragraph(s);
-                p.setFontColor(new DeviceRgb(0, 0, 0));
-                document.add(p);
+
+            String s;
+            Paragraph p;
+            font = PdfFontFactory.createFont("Times-Roman", "Cp1251");
+            for (String key : doc.getFields().keySet()) {
+                s = doc.getFields().get(key);
+
+                if (key.contains("Заголовок")) {
+                    p = new Paragraph(s);
+                    p.setFontColor(new DeviceRgb(0, 0, 0));
+                    p.setFont(font);
+                    p.setFontSize(16);
+                    p.setBold();
+                    pdf.addNewPage();
+                    Log.e("ifdoidfg", String.valueOf(pdf.getNumberOfPages()));
+                    document.add(p);
+                }
+                if (key.contains("Абзац")) {
+                    p = new Paragraph(s);
+                    p.setFontColor(new DeviceRgb(0, 0, 0));
+                    p.setFont(font);
+                    p.setFontSize(12);
+                    document.add(p);
+                }
+                if (key.contains("Подзаголовок")) {
+                    p = new Paragraph(s);
+                    p.setFontColor(new DeviceRgb(0, 0, 0));
+                    p.setFont(font);
+                    p.setFontSize(14);
+                    document.add(p);
+                }
+
+
             }
 
             document.close();
@@ -183,6 +211,7 @@ public class NewActivity extends AppCompatActivity {
 
         Toast.makeText(this, "Your PDF file is saved!", Toast.LENGTH_SHORT).show();
     }
+
     public void savePDFGson(UsersDocument doc, String fileName) {
 
         file_gson = new File(getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), fileName + "_json.pdf");
