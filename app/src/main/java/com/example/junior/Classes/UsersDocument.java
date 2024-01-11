@@ -1,5 +1,7 @@
 package com.example.junior.Classes;
 
+import android.net.Uri;
+
 import java.util.HashMap;
 
 public class UsersDocument {
@@ -56,13 +58,10 @@ public class UsersDocument {
           this.mainInfo = mainInfo;
        }
 
-       public UsersDocument(String nameOfDocument, HashMap<String, String>  mainInfo, HashMap<String, String> fields) {
+       public UsersDocument(String nameOfDocument,  HashMap<String, String>  mainInfo, HashMap<String, String> fields) {
           this.nameOfDocument = nameOfDocument;
           this.fields = fields;
           this.mainInfo = mainInfo;
-          this.pathOfDocument = nameOfDocument+".pdf";
-       }public UsersDocument(String nameOfDocument, String type, HashMap<String, String>  mainInfo, HashMap<String, String> fields) {
-    this.type = type;
-
        }
+
     }

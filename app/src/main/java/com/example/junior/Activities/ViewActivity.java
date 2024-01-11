@@ -2,21 +2,35 @@ package com.example.junior.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.junior.R;
+import com.example.junior.databinding.ActivityViewBinding;
 
 public class ViewActivity extends AppCompatActivity {
-String nameOfFile;
-String pathOfFile;
+
+    private ActivityViewBinding binding;
+
+    private Bundle bundle;
+
+    private Uri fileUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view);
 
-        nameOfFile = getIntent().getStringExtra(App.EXTRA_TO_SEE_DOCUMENT);
-        pathOfFile = getExternalFilesDir(null)+nameOfFile;
+        binding = ActivityViewBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
+        bundle = getIntent().getExtras();
+
+        fileUri = (Uri) bundle.get(App.EXTRA_TO_SEE_DOCUMENT);
+
+        Log.i("extra2", fileUri.toString());
+        if (fileUri != null) {
+            binding.pdfView.fromUri(fileUri).load();
+        }
     }
 }

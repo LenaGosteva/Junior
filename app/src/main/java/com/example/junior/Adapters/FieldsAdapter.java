@@ -3,6 +3,7 @@ package com.example.junior.Adapters;
 import android.app.Activity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,10 @@ import java.util.List;
 public class FieldsAdapter extends RecyclerView.Adapter<FieldsAdapter.FieldsViewHolder> {
 
     public HashMap<String, String> getList() {
+        list.clear();
+        for (String key: keys) {
+            list.put(key, values.get(keys.indexOf(key)));
+        }
         return list;
     }
 
@@ -34,11 +39,12 @@ public class FieldsAdapter extends RecyclerView.Adapter<FieldsAdapter.FieldsView
 
     public final Activity activity;
 
-    public void addToList(String key, String value) {
-        list.put(key, value);
-        keys.add(key);
-        values.add(value);
+    public void addToList(String key, String value, int position) {
+        keys.add(position,key);
         notifyDataSetChanged();
+        Log.e("UJV", keys.toString());
+        Log.e("UJV", values.toString());        values.add(position,value);
+
     }
 
     public FieldsAdapter(HashMap<String, String> list, Activity activity) {
@@ -83,14 +89,14 @@ public class FieldsAdapter extends RecyclerView.Adapter<FieldsAdapter.FieldsView
             @Override
             public void afterTextChanged(Editable editable) {
                 values.set(pos, editable.toString());
-                list.put(keys.get(position), values.get(position));
             }
         });
     }
 
     @Override
+
     public int getItemCount() {
-        return list.size();
+        return keys.size();
     }
 
 

@@ -55,11 +55,12 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
     @Override
     public void onBindViewHolder(@NonNull FilesAdapter.FilesViewHolder holder, int position) {
-
-        holder.name.setText(list.get(position).substring(0, list.get(position).length() - 4));
+String filename = list.get(position);
+//String filename = list.get(position).substring(0, list.get(position).length() - 4);
+        holder.name.setText(filename);
         holder.name.setClickable(true);
         holder.name.setOnClickListener(gh->{
-           openPDF(position);
+           goFile(filename);
 
     });
     }
@@ -76,18 +77,17 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
             name = itemView.findViewById(R.id.name_of_file_in_list);
         }
     }
-    public void openPDF(int position) {
-        Intent intent = new Intent(activity, ViewActivity.class);
-        intent.putExtra(App.EXTRA_TO_SEE_DOCUMENT, list.get(position));
-        activity.startActivity(intent);
-    }
-    public  void openActivity(int position){
-        //взять файл
+    private void goFile(String fileName) {
 
-        String s= "";
-        App.gson.fromJson(s,UsersDocument.class);
-        Intent intent = new Intent(activity, NewActivity.class);
-        intent.putExtra(App.EXTRA_TO_SEE_DOCUMENT, "");
+        File file = new File(App.directory, fileName );
+//        File file = new File(fileName);
+        Intent intent = new Intent(activity, ViewActivity.class);
+
+        intent.putExtra(App.EXTRA_TO_SEE_DOCUMENT, Uri.fromFile(file));
+        intent.setType("application/data");
+
+        activity.startActivity(intent);
+        activity.finish();
     }
 }
 

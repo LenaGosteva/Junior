@@ -98,7 +98,7 @@ dependencies {
     implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.code.gson:gson:2.9.0'
-
+    implementation("com.github.barteksc:android-pdf-viewer:2.8.2")
 
 
     //    implementation 'org.apache.pdfbox:pdfbox:3.0.0'
