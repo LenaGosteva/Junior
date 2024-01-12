@@ -1,67 +1,55 @@
 package com.example.junior.Classes;
 
-import android.net.Uri;
-
 import java.util.HashMap;
 
 public class UsersDocument {
-       public String nameOfDocument = "Документ";
-       public String pathOfDocument = "Документ";
-       public String type = "Документ";
+    public String nameOfDocument = "Документ";
 
-       public HashMap<String, String> mainInfo;
-       public HashMap<String, String> fields;
+    /*
+        todo | It's better to call this field "titlePageInfo",
+        todo | because can be confused with something related with main text on New Activity
+    */
+    public HashMap<String, String> mainInfo;
 
-       public String getNameOfDocument() {
-          return nameOfDocument;
-       }
+    // todo It's better to call this field "mainTextInfo" to maintain uniformity
+    public HashMap<String, String> fields;
 
-       public void setNameOfDocument(String nameOfDocument) {
-          this.nameOfDocument = nameOfDocument;
-       }
+    public String pathOfDocument = "Документ"; // todo | where is a path?
 
-       public String getType() {
-          return type;
-       }
+    public String type = "Документ";
 
-       public void setType(String type) {
-          this.type = type;
-       }
-
-       public HashMap<String, String> getFields() {
-          return fields;
-       }
-
-       public void setFields(HashMap<String, String> fields) {
-          this.fields = fields;
-       }
-       public UsersDocument(){
-          this.type = "Документ";
-          this.nameOfDocument = "Документ";
-          this.fields = new HashMap<>();
-          this.mainInfo = new HashMap<>();
-       }
-
-       public String getPathOfDocument() {
-          return pathOfDocument;
-       }
-
-       public void setPathOfDocument(String pathOfDocument) {
-          this.pathOfDocument = pathOfDocument;
-       }
-
-       public HashMap<String, String> getMainInfo() {
-          return mainInfo;
-       }
-
-       public void setMainInfo(HashMap<String, String> mainInfo) {
-          this.mainInfo = mainInfo;
-       }
-
-       public UsersDocument(String nameOfDocument,  HashMap<String, String>  mainInfo, HashMap<String, String> fields) {
-          this.nameOfDocument = nameOfDocument;
-          this.fields = fields;
-          this.mainInfo = mainInfo;
-       }
-
+    public UsersDocument(String nameOfDocument, HashMap<String, String> mainInfo, HashMap<String, String> fields) {
+        this.nameOfDocument = nameOfDocument;
+        this.mainInfo = mainInfo;
+        this.fields = fields;
     }
+
+    public UsersDocument() {
+        this.fields = new HashMap<>();
+        this.mainInfo = new HashMap<>();
+    }
+
+    public void setPathOfDocument(String pathOfDocument) {
+        this.pathOfDocument = pathOfDocument;
+    }
+
+    public String getNameOfDocument() {
+        return nameOfDocument;
+    }
+
+    public HashMap<String, String> getMainInfo() {
+        return mainInfo;
+    }
+
+    public HashMap<String, String> getFields() {
+        return fields;
+    }
+
+    public String getPathOfDocument() {
+        return pathOfDocument;
+    }
+
+    public String getType() {
+        return type;
+    }
+}

@@ -1,18 +1,12 @@
 package com.example.junior.Activities;
 
-import static android.os.Environment.DIRECTORY_DOCUMENTS;
-import static android.os.Environment.getExternalStorageDirectory;
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
+import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 
-import static com.itextpdf.io.font.constants.StandardFonts.TIMES_ROMAN;
-
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,54 +15,48 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.junior.Adapters.FieldsAdapter;
 import com.example.junior.Classes.UsersDocument;
 import com.example.junior.Controllers.AuthController;
-import com.example.junior.Controllers.ConvertDocumentToPDF;
 import com.example.junior.databinding.ActivityNewBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.itextpdf.kernel.colors.DeviceRgb;
 
 import com.itextpdf.kernel.pdf.PdfDocument; // IMPORTANT!!!
-import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfWriter; // IMPORTANT!!!
 import com.itextpdf.layout.Document; // IMPORTANT!!!
 import com.itextpdf.layout.element.Paragraph; // IMPORTANT!!!
 
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Random;
 
-
-public class NewActivity extends AppCompatActivity {
-    AuthController authController;
-    private static final int STORAGE_CODE = 1000;
-    HashMap<String, String> titlePAge = new HashMap<>();
-    HashMap<String, String> mainText = new HashMap<>();
+public class NewActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ActivityNewBinding binding;
-    FieldsAdapter mainTextAdapter;
-    FieldsAdapter titleAdapter;
-    File file;
-    File file_gson;
-    PdfFont font;
 
-    public UsersDocument document = new UsersDocument();
+    private AuthController authController;
+
+    private FieldsAdapter titlePageAdapter;
+    private FieldsAdapter mainTextAdapter;
+
+    private HashMap<String, String> titlePage = new HashMap<>();
+    private HashMap<String, String> mainText = new HashMap<>();
+
+    private File file;
+
+    private File file_gson;
+
+    private UsersDocument document;
+
+    private PdfFont font;
+
+    //    public static String FONT_FILENAME = "assets/fonts/ArialRegular.ttf";
+
+    //    private PdfFont font = PdfFontFactory.createFont(FONT_FILENAME, PdfEncodings.IDENTITY_H);
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
@@ -76,64 +64,62 @@ public class NewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityNewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.typeOfField.setText("Название документа");
-        binding.textOfField.setHint("Введите название тут");
+
         authController = new AuthController();
 
-        doTitleListFull();
+        settingUpClicksViews();
 
+        fillEntirePage();
+
+        initializeAdapters();
+        setLayoutManagers();
+    }
+
+    private void settingUpClicksViews() {
+        binding.titleRecyclerUp.setOnClickListener(this);
+        binding.titleRecyclerDown.setOnClickListener(this);
+        binding.save.setOnClickListener(this);
+        binding.viewPDfF.setOnClickListener(this);
+        binding.add.setOnClickListener(this);
+        binding.addHeader.setOnClickListener(this);
+        binding.addSubtitle.setOnClickListener(this);
+        binding.addTopic.setOnClickListener(this);
+    }
+
+    private void fillEntirePage() {
+        binding.typeOfField.setText("Название документа");
+        binding.textOfField.setHint("Введите название тут:");
+
+        doTitleListFull();
+        doMainTextFull();
+    }
+
+    private void doTitleListFull() {
+        titlePage.put("Заголовок", "");
+        titlePage.put("Тип документа", "");
+        titlePage.put("Руководитель", App.getSharedPreferences().getTeacher());
+        titlePage.put("Выполняющий", App.getSharedPreferences().getName());
+        titlePage.put("Место и год", App.getSharedPreferences().getPlace() + App.getSharedPreferences().getYear());
+        titlePage.put("Организация", App.getSharedPreferences().getOrganization());
+    }
+
+    private void doMainTextFull() {
         mainText.put("Заголовок", "");
         mainText.put("Подзаголовок", "");
         mainText.put("Абзац", "");
+    }
 
-
-        titleAdapter = new FieldsAdapter(titlePAge, this);
+    private void initializeAdapters() {
+        titlePageAdapter = new FieldsAdapter(titlePage, this);
         mainTextAdapter = new FieldsAdapter(mainText, this);
-        binding.recyclerToMainText.setLayoutManager(new LinearLayoutManager(getApplication()));
+    }
+
+    private void setLayoutManagers() {
+        binding.recyclerToTitlePage.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerToTitlePage.setAdapter(titlePageAdapter);
+
+        binding.recyclerToMainText.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerToMainText.setAdapter(mainTextAdapter);
-        binding.recyclerToTitlePage.setLayoutManager(new LinearLayoutManager(getApplication()));
-        binding.recyclerToTitlePage.setAdapter(titleAdapter);
-
-        binding.titleRecyclerUp.setOnClickListener(gbh -> {
-
-            binding.recyclerToTitlePage.setVisibility(binding.recyclerToTitlePage.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-            binding.switcherDrop.showNext();
-        });
-        binding.titleRecyclerDown.setOnClickListener(gbh -> {
-
-            binding.recyclerToTitlePage.setVisibility(binding.recyclerToTitlePage.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-            binding.switcherDrop.showNext();
-        });
-        binding.save.setOnClickListener(fghjk -> {
-            clickSave(false);
-            finish();
-
-        });
-        binding.viewPDfF.setOnClickListener(fg -> {
-            clickSave(true);
-
-        });
-
-        binding.add.setOnClickListener(hjhk -> {
-            binding.layoutAddHeader.setVisibility(binding.layoutAddHeader.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-            binding.layoutAddSubtitle.setVisibility(binding.layoutAddSubtitle.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-            binding.layoutAddTopic.setVisibility(binding.layoutAddTopic.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-        });
-
-        binding.addHeader.setOnClickListener(h -> {
-
-            addField(View.GONE, "Заголовок", mainTextAdapter.getKeys().size());
-        });
-        binding.addSubtitle.setOnClickListener(h -> {
-
-            addField(View.GONE, "Подзаголовок", mainTextAdapter.getKeys().size());
-
-        });
-        binding.addTopic.setOnClickListener(h -> {
-            addField(View.GONE, "Абзац", mainTextAdapter.getKeys().size());
-
-        });
-
     }
 
     public void addField(int flag, String text, int position) {
@@ -141,7 +127,7 @@ public class NewActivity extends AppCompatActivity {
         binding.layoutAddSubtitle.setVisibility(flag);
         binding.layoutAddTopic.setVisibility(flag);
 
-        mainTextAdapter.addToList(text + randInt(12, 1000000), "", position);
+        mainTextAdapter.addToList(text + randInt(12, 1_000_000), "", position);
     }
 
     public int randInt(int min, int max) {
@@ -151,17 +137,13 @@ public class NewActivity extends AppCompatActivity {
         return randomNum;
     }
 
-    public void doTitleListFull() {
-        titlePAge.put("Заголовок", "");
-        titlePAge.put("Тип документа", "");
-        titlePAge.put("Руководитель", App.getSharedPreferences().getTeacher());
-        titlePAge.put("Выполняющий", App.getSharedPreferences().getName());
-        titlePAge.put("Место и год", App.getSharedPreferences().getPlace() + App.getSharedPreferences().getYear());
-        titlePAge.put("Организация", App.getSharedPreferences().getOrganization());
-    }
-
     public void savePDF(UsersDocument doc, String fileName) {
         file = new File(getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), fileName + ".pdf");
+        /*
+            todo | use a function getExternalFilesDir instead of a function getExternalStoragePublicDirectory(), which
+            todo | can may lead to errors due to the specifics of its work
+         */
+
         Log.e("KJGih", doc.getFields().values().toString());
 
         try {
@@ -198,10 +180,7 @@ public class NewActivity extends AppCompatActivity {
                     p.setFontSize(14);
                     document.add(p);
                 }
-
-
             }
-
             document.close();
 
         } catch (Exception e) {
@@ -213,19 +192,18 @@ public class NewActivity extends AppCompatActivity {
     }
 
     public void savePDFGson(UsersDocument doc, String fileName) {
-
         file_gson = new File(getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), fileName + "_json.pdf");
+
         Log.e("KJGih", doc.getFields().values().toString());
 
         try {
             PdfDocument pdf = new PdfDocument(new PdfWriter(file_gson));
             Document document = new Document(pdf);
-            ;
+
             Paragraph p = new Paragraph(App.gson.toJson(doc));
             document.add(p);
 
             document.close();
-
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             Log.e("KJGih", e.getMessage());
@@ -234,8 +212,42 @@ public class NewActivity extends AppCompatActivity {
         Toast.makeText(this, "Your PDF file is saved!", Toast.LENGTH_SHORT).show();
     }
 
-    private void goFile() {
+    private void saveToNet() {
 
+        authController.addDocumentGson(document, task -> {});
+
+        authController.addDocument(document, task -> {
+            if (task.isComplete()) {
+                Toast.makeText(this, "ydtfi;guhij", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        authController.addDocumentStorage(document.getNameOfDocument() + ".pdf", Uri.fromFile(file), k -> {});
+
+        authController.addDocumentStorage(document.getNameOfDocument() + "_json.pdf", Uri.fromFile(file_gson), k -> {});
+    }
+
+    private void saveDocument() {
+        document = new UsersDocument(!binding.textOfField.getText().toString().isEmpty() ?
+                binding.textOfField.getText().toString() : "document " + Math.random(),
+                titlePageAdapter.getList(),
+                mainTextAdapter.getList());
+
+        document.setPathOfDocument(getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Junior/Documents/pdf/" + document.getNameOfDocument() + ".pdf");
+        /*
+            todo | use a function getExternalFilesDir instead of a function getExternalStoragePublicDirectory(), which
+            todo | can may lead to errors due to the specifics of its work
+         */
+
+        savePDF(document, document.nameOfDocument);
+        savePDFGson(document, document.nameOfDocument);
+        saveToNet();
+    }
+
+    private void goToViewActivity() {
         Intent intent = new Intent(this, ViewActivity.class);
 
         intent.putExtra(App.EXTRA_TO_SEE_DOCUMENT, Uri.fromFile(file));
@@ -244,38 +256,43 @@ public class NewActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void clickSave(boolean goToViewActivity) {
-        document = new UsersDocument(!binding.textOfField.getText().toString().isEmpty() ?
-                binding.textOfField.getText().toString() : "document " + Math.random(),
-                titleAdapter.getList(), mainTextAdapter.getList());
-        document.setPathOfDocument(getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Junior/Documents/pdf/" + document.getNameOfDocument() + ".pdf");
-        savePDF(document, document.nameOfDocument);
-        savePDFGson(document, document.nameOfDocument);
-        saveToNet();
-        if (goToViewActivity) {
-            goFile();
+    @Override
+    public void onClick(View view) {
+        if (view == binding.titleRecyclerUp) {
+            binding.recyclerToTitlePage.setVisibility(binding.recyclerToTitlePage.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            binding.switcherDrop.showNext();
         }
-    }
-
-    private void saveToNet() {
-
-        authController.addDocumentGson(document, task -> {
-        });
-        authController.addDocument(document, task -> {
-            if (task.isComplete()) Toast.makeText(this, "ydtfi;guhij", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-        });
-        authController.addDocumentStorage(document.getNameOfDocument() + ".pdf", Uri.fromFile(file), k -> {
-        });
-        authController.addDocumentStorage(document.getNameOfDocument() + "_json.pdf", Uri.fromFile(file_gson), k -> {
-        });
+        else if (view == binding.titleRecyclerDown) {
+            binding.recyclerToTitlePage.setVisibility(binding.recyclerToTitlePage.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            binding.switcherDrop.showNext();
+        }
+        else if (view == binding.save) {
+            saveDocument();
+            finish();
+        }
+        else if (view == binding.viewPDfF) {
+            goToViewActivity();
+        }
+        else if (view == binding.add) {
+            binding.layoutAddHeader.setVisibility(binding.layoutAddHeader.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            binding.layoutAddSubtitle.setVisibility(binding.layoutAddSubtitle.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            binding.layoutAddTopic.setVisibility(binding.layoutAddTopic.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        }
+        else if (view == binding.addHeader) {
+            addField(View.GONE, "Заголовок", mainTextAdapter.getKeys().size());
+        }
+        else if (view == binding.addSubtitle) {
+            addField(View.GONE, "Подзаголовок", mainTextAdapter.getKeys().size());
+        }
+        else if (view == binding.addTopic) {
+            addField(View.GONE, "Абзац", mainTextAdapter.getKeys().size());
+        }
     }
 
     @Override
     protected void onStop() {
-        titlePAge = null;
-        mainText = null;
+        titlePage.clear();
+        mainText.clear();
         super.onStop();
     }
 }

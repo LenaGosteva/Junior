@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:windowSoftInputMode="adjustPan"
     android:layout_height="match_parent"
+    android:windowSoftInputMode="adjustPan"
     tools:context=".Activities.NewActivity">
 
     <ImageButton
         android:id="@+id/save"
         android:layout_width="50dp"
-        android:clickable="true"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:backgroundTint="@color/null_color"
+        android:clickable="true"
         android:src="@drawable/icon_save_pdf" />
 
     <ImageButton
@@ -83,11 +83,11 @@
             android:layout_height="50dp"
             android:backgroundTint="@color/null_color"
             android:src="@drawable/icon_drop_up" />
+
         <ImageButton
             android:id="@+id/title_recycler_down"
             android:layout_width="50dp"
             android:layout_height="50dp"
-
             android:backgroundTint="@color/null_color"
             android:src="@drawable/icon_drop_down" />
 
@@ -218,6 +218,5 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp" />
-
 
 </RelativeLayout>

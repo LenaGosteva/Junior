@@ -3,7 +3,6 @@ package com.example.junior.Adapters;
 import android.app.Activity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,21 @@ import java.util.List;
 
 public class FieldsAdapter extends RecyclerView.Adapter<FieldsAdapter.FieldsViewHolder> {
 
+    public HashMap<String, String> list;
+
+    public List<String> keys = new ArrayList<>();
+
+    public List<String> values = new ArrayList<>();
+
+    public final Activity activity;
+
+    public FieldsAdapter(HashMap<String, String> list, Activity activity) {
+        this.list = list;
+        this.keys.addAll(list.keySet());
+        this.values.addAll(list.values());
+        this.activity = activity;
+    }
+
     public HashMap<String, String> getList() {
         list.clear();
         for (String key: keys) {
@@ -29,52 +43,44 @@ public class FieldsAdapter extends RecyclerView.Adapter<FieldsAdapter.FieldsView
         return list;
     }
 
-    public void setList(HashMap<String, String> list) {
-        this.list = list;
+    public List<String> getKeys() {
+        return keys;
     }
-
-    HashMap<String, String> list;
-    List<String> keys = new ArrayList<>();
-    List<String> values = new ArrayList<>();
-
-    public final Activity activity;
 
     public void addToList(String key, String value, int position) {
-        keys.add(position,key);
+        keys.add(position, key);
         notifyDataSetChanged();
-        Log.e("UJV", keys.toString());
-        Log.e("UJV", values.toString());        values.add(position,value);
-
-    }
-
-    public FieldsAdapter(HashMap<String, String> list, Activity activity) {
-        this.list = list;
-        keys.addAll(list.keySet());
-        this.values.addAll(list.values());
-        this.activity = activity;
+        values.add(position, value);
     }
 
     @NonNull
     @Override
     public FieldsAdapter.FieldsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_input_field, parent, false);
+        View view = LayoutInflater
+                .from(parent.getContext())
+                .inflate(R.layout.view_input_field, parent, false);
 
         view.setLongClickable(true);
         return new FieldsAdapter.FieldsViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull FieldsAdapter.FieldsViewHolder holder, int position) {
 
+        switch (keys.get(holder.getAdapterPosition())) {
+            case "Заголовок":
+                holder.inputLayout.setHint("Заголовок");
+                break;
+            case "Подзаголовок":
+                holder.inputLayout.setHint("Подзаголовок");
+                break;
+            case "Абзац":
+                holder.inputLayout.setHint("Абзац");
+                break;
+            default: holder.inputLayout.setHint(fetchKeyOfCurrentField(holder.getAdapterPosition()));
+        }
 
-        if (keys.get(position).contains("Заголовок")) holder.inputLayout.setHint("Заголовок");
-        else if (keys.get(position).contains("Подзаголовок"))
-            holder.inputLayout.setHint("Подзаголовок");
-        else if (keys.get(position).contains("Абзац")) holder.inputLayout.setHint("Абзац");
-        else holder.inputLayout.setHint(keys.get(position));
+        holder.input.setText(values.get(holder.getAdapterPosition()));
 
-        holder.input.setText(values.get(position));
-        int pos = position;
         holder.input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -88,50 +94,49 @@ public class FieldsAdapter extends RecyclerView.Adapter<FieldsAdapter.FieldsView
 
             @Override
             public void afterTextChanged(Editable editable) {
-                values.set(pos, editable.toString());
+                values.set(holder.getAdapterPosition(), editable.toString());
             }
         });
     }
 
-    @Override
-
-    public int getItemCount() {
-        return keys.size();
-    }
-
-
     public static class FieldsViewHolder extends RecyclerView.ViewHolder {
-        //TextView type;
-        EditText input;
-        TextInputLayout inputLayout;
+
+        // private TextView type;
+
+        private TextInputLayout inputLayout;
+
+        private EditText input;
 
         public FieldsViewHolder(View itemView) {
             super(itemView);
 //            type = itemView.findViewById(R.id.type_of_field);
-            input = itemView.findViewById(R.id.text_input_of_field);
             inputLayout = itemView.findViewById(R.id.text_of_field);
-
-
+            input = itemView.findViewById(R.id.text_input_of_field);
         }
     }
 
-    public List<String> getKeys() {
-        return keys;
+    @Override
+    public int getItemCount() {
+        return keys.size();
     }
 
-    public void setKeys(List<String> keys) {
-        this.keys = keys;
-    }
+    private String fetchKeyOfCurrentField(int position) {
+        String key = keys.get(position);
 
-    public List<String> getValues() {
-        return values;
-    }
+        String featuredKey = "";
 
-    public void setValues(List<String> values) {
-        this.values = values;
-    }
-
-    public Activity getActivity() {
-        return activity;
+        switch (key.charAt(0)) {
+            case 'З':
+                featuredKey = key.substring(0, 9);
+                break;
+            case 'П':
+                featuredKey = key.substring(0, 12);
+                break;
+            case 'А':
+                featuredKey = key.substring(0, 5);
+                break;
+            default: return key;
+        }
+        return featuredKey;
     }
 }

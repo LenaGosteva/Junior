@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:maxHeight="200dp"
-    android:windowSoftInputMode="adjustPan"
     android:orientation="vertical"
-    android:layout_height="wrap_content">
-<!--    <TextView-->
-<!--        android:id="@+id/type_of_field"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="25dp"-->
-<!--        android:textSize="18dp"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:textColor="@android:color/darker_gray"-->
-<!--        android:text="Заголовок 2"/>-->
+    android:windowSoftInputMode="adjustPan">
+    <!--    <TextView-->
+    <!--        android:id="@+id/type_of_field"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="25dp"-->
+    <!--        android:textSize="18dp"-->
+    <!--        android:gravity="center_vertical"-->
+    <!--        android:textColor="@android:color/darker_gray"-->
+    <!--        android:text="Заголовок 2"/>-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_of_field"
-            android:layout_width="match_parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
                 android:id="@+id/text_input_of_field"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                />
+                android:clickable="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
