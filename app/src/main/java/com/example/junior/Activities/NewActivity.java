@@ -2,7 +2,8 @@ package com.example.junior.Activities;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
-import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.io.font.constants.FontStyles;
+import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 
@@ -28,6 +29,7 @@ import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.pdf.PdfDocument; // IMPORTANT!!!
 import com.itextpdf.kernel.pdf.PdfWriter; // IMPORTANT!!!
 import com.itextpdf.layout.Document; // IMPORTANT!!!
+import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.Paragraph; // IMPORTANT!!!
 
 import java.io.File;
@@ -52,7 +54,6 @@ public class NewActivity extends AppCompatActivity implements View.OnClickListen
 
     private UsersDocument document;
 
-    private PdfFont font;
 
     //    public static String FONT_FILENAME = "assets/fonts/ArialRegular.ttf";
 
@@ -152,32 +153,35 @@ public class NewActivity extends AppCompatActivity implements View.OnClickListen
 
             String s;
             Paragraph p;
-            font = PdfFontFactory.createFont("Times-Roman", "Cp1251");
+
+            PdfFont font = PdfFontFactory.createFont(
+                    "assets/timesnewromanpsmt.ttf",
+                    PdfFontFactory.EmbeddingStrategy.FORCE_EMBEDDED);
+
             for (String key : doc.getFields().keySet()) {
                 s = doc.getFields().get(key);
 
                 if (key.contains("Заголовок")) {
                     p = new Paragraph(s);
-                    p.setFontColor(new DeviceRgb(0, 0, 0));
                     p.setFont(font);
+                    p.setFontColor(new DeviceRgb(0, 0, 0));
                     p.setFontSize(16);
-                    p.setBold();
-                    pdf.addNewPage();
+//                    pdf.addNewPage();
                     Log.e("ifdoidfg", String.valueOf(pdf.getNumberOfPages()));
-                    document.add(p);
-                }
-                if (key.contains("Абзац")) {
-                    p = new Paragraph(s);
-                    p.setFontColor(new DeviceRgb(0, 0, 0));
-                    p.setFont(font);
-                    p.setFontSize(12);
                     document.add(p);
                 }
                 if (key.contains("Подзаголовок")) {
                     p = new Paragraph(s);
-                    p.setFontColor(new DeviceRgb(0, 0, 0));
                     p.setFont(font);
+                    p.setFontColor(new DeviceRgb(0, 0, 0));
                     p.setFontSize(14);
+                    document.add(p);
+                }
+                if (key.contains("Абзац")) {
+                    p = new Paragraph(s);
+                    p.setFont(font);
+                    p.setFontColor(new DeviceRgb(0, 0, 0));
+                    p.setFontSize(12);
                     document.add(p);
                 }
             }
