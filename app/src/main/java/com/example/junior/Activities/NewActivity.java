@@ -166,7 +166,6 @@ public class NewActivity extends AppCompatActivity implements View.OnClickListen
                     p.setFont(font);
                     p.setFontColor(new DeviceRgb(0, 0, 0));
                     p.setFontSize(16);
-//                    pdf.addNewPage();
                     Log.e("ifdoidfg", String.valueOf(pdf.getNumberOfPages()));
                     document.add(p);
                 }
@@ -185,8 +184,11 @@ public class NewActivity extends AppCompatActivity implements View.OnClickListen
                     document.add(p);
                 }
             }
-            document.close();
 
+            document.getPdfDocument()
+                    .addNewPage(2);
+            
+            document.close();
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             Log.e("KJGih", e.getMessage());
