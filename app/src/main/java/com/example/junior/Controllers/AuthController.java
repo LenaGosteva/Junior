@@ -71,7 +71,7 @@ public class AuthController {
     public void addDocumentGson(UsersDocument document, OnCompleteListener listener) {
         if (isAuth()) {
             String doc = new Gson().toJson(document);
-            database.child("users").child(getUser().getUid()).child(document.nameOfDocument).setValue(doc).addOnCompleteListener(listener);
+            database.child("users").child(getUser().getUid()).child(document.nameOfDocument + "_gson").setValue(doc).addOnCompleteListener(listener);
         }
     }
 

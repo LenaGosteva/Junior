@@ -4,7 +4,6 @@ import static android.os.Environment.getExternalStoragePublicDirectory;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Environment;
 
 import androidx.room.Database;
@@ -35,6 +34,7 @@ public class App extends Application {
     public static final String YEAR_SP_NAME = "i sp name";
     public static final String ORG_SP_NAME = "i i;sp name";
     public static final String EXTRA_TO_SEE_DOCUMENT = "i gouhji;sp name";
+    public static final String EXTRA_TO_SEE_FIELDS_DOCUMENT = "i gffdeftheouhji;sp name";
     public static DatabaseSP sharedPreferences;
     public static Context instance;
     private App inst = this;
@@ -63,7 +63,7 @@ public class App extends Application {
     }
 
     public void setSharedPreferences(DatabaseSP sharedPreferences) {
-        this.sharedPreferences = sharedPreferences;
+        App.sharedPreferences = sharedPreferences;
     }
 
     public static Database getDatabase() {

@@ -2,11 +2,6 @@ package com.example.junior.Activities;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
-import com.itextpdf.io.font.constants.FontStyles;
-import com.itextpdf.io.font.constants.StandardFonts;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -24,13 +19,15 @@ import com.example.junior.Adapters.FieldsAdapter;
 import com.example.junior.Classes.UsersDocument;
 import com.example.junior.Controllers.AuthController;
 import com.example.junior.databinding.ActivityNewBinding;
+import com.google.gson.Gson;
 import com.itextpdf.kernel.colors.DeviceRgb;
-
-import com.itextpdf.kernel.pdf.PdfDocument; // IMPORTANT!!!
-import com.itextpdf.kernel.pdf.PdfWriter; // IMPORTANT!!!
-import com.itextpdf.layout.Document; // IMPORTANT!!!
-import com.itextpdf.layout.Style;
-import com.itextpdf.layout.element.Paragraph; // IMPORTANT!!!
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.properties.TextAlignment;
 
 import java.io.File;
 import java.util.HashMap;
@@ -45,8 +42,9 @@ public class NewActivity extends AppCompatActivity implements View.OnClickListen
     private FieldsAdapter titlePageAdapter;
     private FieldsAdapter mainTextAdapter;
 
-    private HashMap<String, String> titlePage = new HashMap<>();
-    private HashMap<String, String> mainText = new HashMap<>();
+    private final HashMap<String, String> titlePage = new HashMap<>();
+    private final HashMap<String, String> mainText = new HashMap<>();
+    private final HashMap<String, Paragraph> yg = new HashMap<>();
 
     private File file;
 
@@ -67,13 +65,28 @@ public class NewActivity extends AppCompatActivity implements View.OnClickListen
         setContentView(binding.getRoot());
 
         authController = new AuthController();
+        try {
+            authController.getDocumentGson(getIntent().getExtras().getString(App.EXTRA_TO_SEE_FIELDS_DOCUMENT) + "_gson", jhb -> {
 
-        settingUpClicksViews();
+                try {
+                    document = new Gson().fromJson(jhb.getResult().getValue(String.class), UsersDocument.class);
+                    fillEntirePage(document);
+                } catch (Exception e) {
+                    Log.e("KUV564", e.getMessage());
+                    fillEntirePage();
+                } finally {
+                    settingUpClicksViews();
+                    initializeAdapters();
+                    setLayoutManagers();
+                }
+            });
+        } catch (Exception e) {
+            fillEntirePage();
+            settingUpClicksViews();
+            initializeAdapters();
+            setLayoutManagers();
+        }
 
-        fillEntirePage();
-
-        initializeAdapters();
-        setLayoutManagers();
     }
 
     private void settingUpClicksViews() {
@@ -95,6 +108,14 @@ public class NewActivity extends AppCompatActivity implements View.OnClickListen
         doMainTextFull();
     }
 
+    private void fillEntirePage(UsersDocument doc) {
+        binding.typeOfField.setText("Название документа");
+        binding.textOfField.setText(doc.nameOfDocument);
+
+        doTitleListFull(doc);
+        doMainTextFull(doc);
+    }
+
     private void doTitleListFull() {
         titlePage.put("Заголовок", "");
         titlePage.put("Тип документа", "");
@@ -104,10 +125,23 @@ public class NewActivity extends AppCompatActivity implements View.OnClickListen
         titlePage.put("Организация", App.getSharedPreferences().getOrganization());
     }
 
+    private void doTitleListFull(UsersDocument doc) {
+        titlePage.put("Заголовок", doc.getMainInfo().get("Заголовок"));
+        titlePage.put("Тип документа", doc.getMainInfo().get("Тип документа"));
+        titlePage.put("Руководитель", doc.getMainInfo().get("Руководитель"));
+        titlePage.put("Выполняющий", doc.getMainInfo().get("Выполняющий"));
+        titlePage.put("Место и год", doc.getMainInfo().get("Место и год"));
+        titlePage.put("Организация", doc.getMainInfo().get("Организация"));
+    }
+
     private void doMainTextFull() {
         mainText.put("Заголовок", "");
         mainText.put("Подзаголовок", "");
         mainText.put("Абзац", "");
+    }
+
+    private void doMainTextFull(UsersDocument doc) {
+        mainText.putAll(doc.getFields());
     }
 
     private void initializeAdapters() {
@@ -128,7 +162,7 @@ public class NewActivity extends AppCompatActivity implements View.OnClickListen
         binding.layoutAddSubtitle.setVisibility(flag);
         binding.layoutAddTopic.setVisibility(flag);
 
-        mainTextAdapter.addToList(text + randInt(12, 1_000_000), "", position);
+        mainTextAdapter.addToList(text + position, "", position);
     }
 
     public int randInt(int min, int max) {
@@ -152,46 +186,126 @@ public class NewActivity extends AppCompatActivity implements View.OnClickListen
             Document document = new Document(pdf);
 
             String s;
-            Paragraph p;
+            Paragraph p, zagolovok, typedoc, rykovoditel, vipolnyayuschi, mecto, organiz;
 
             PdfFont font = PdfFontFactory.createFont(
                     "assets/timesnewromanpsmt.ttf",
                     PdfFontFactory.EmbeddingStrategy.FORCE_EMBEDDED);
 
-            for (String key : doc.getFields().keySet()) {
-                s = doc.getFields().get(key);
+            boolean main = true;
+            boolean f = true;
+            for (String key_field : doc.getFields().keySet()) {
 
-                if (key.contains("Заголовок")) {
-                    p = new Paragraph(s);
-                    p.setFont(font);
-                    p.setFontColor(new DeviceRgb(0, 0, 0));
-                    p.setFontSize(16);
-                    Log.e("ifdoidfg", String.valueOf(pdf.getNumberOfPages()));
-                    document.add(p);
-                }
-                if (key.contains("Подзаголовок")) {
-                    p = new Paragraph(s);
-                    p.setFont(font);
-                    p.setFontColor(new DeviceRgb(0, 0, 0));
-                    p.setFontSize(14);
-                    document.add(p);
-                }
-                if (key.contains("Абзац")) {
-                    p = new Paragraph(s);
-                    p.setFont(font);
-                    p.setFontColor(new DeviceRgb(0, 0, 0));
-                    p.setFontSize(12);
-                    document.add(p);
+                if (main) {
+                    main = false;
+                    for (String key : doc.getMainInfo().keySet()) {
+                        s = doc.getMainInfo().get(key);
+
+                        if (s.contains("Заголовок")) {
+                            zagolovok = new Paragraph(s);
+                            zagolovok.setFont(font);
+                            zagolovok.setFontColor(new DeviceRgb(0, 0, 0));
+                            zagolovok.setFontSize(16);
+                            zagolovok.setTextAlignment(TextAlignment.CENTER);
+                            zagolovok.setBold();
+                            yg.put("Заголовок", zagolovok);
+                        }
+                        if (s.contains("Тип документа")) {
+                            typedoc = new Paragraph(s);
+                            typedoc.setFont(font);
+                            typedoc.setFontColor(new DeviceRgb(0, 0, 0));
+                            typedoc.setFontSize(16);
+                            typedoc.setTextAlignment(TextAlignment.CENTER);
+                            typedoc.setBold();
+                            yg.put("Тип документа", typedoc);
+                        }
+                        if (s.contains("Руководитель")) {
+                            rykovoditel = new Paragraph("Руководитель: " + s);
+                            rykovoditel.setFont(font);
+                            rykovoditel.setFontColor(new DeviceRgb(0, 0, 0));
+                            rykovoditel.setFontSize(14);
+                            rykovoditel.setTextAlignment(TextAlignment.RIGHT);
+                            rykovoditel.setItalic();
+                            yg.put("Руководитель", rykovoditel);
+
+                        }
+                        if (s.contains("Выполняющий")) {
+                            vipolnyayuschi = new Paragraph("Выполнял: " + s);
+                            vipolnyayuschi.setFont(font);
+                            vipolnyayuschi.setFontColor(new DeviceRgb(0, 0, 0));
+                            vipolnyayuschi.setFontSize(14);
+                            vipolnyayuschi.setTextAlignment(TextAlignment.RIGHT);
+                            vipolnyayuschi.setItalic();
+                            yg.put("Выполняющий", vipolnyayuschi);
+
+                        }
+                        if (s.contains("Место и год")) {
+                            mecto = new Paragraph(s);
+                            mecto.setFont(font);
+                            mecto.setFontColor(new DeviceRgb(0, 0, 0));
+                            mecto.setFontSize(14);
+                            mecto.setTextAlignment(TextAlignment.CENTER);
+                            yg.put("Место и год", mecto);
+
+                        }
+                        if (s.contains("Организация")) {
+                            organiz = new Paragraph(s);
+                            organiz.setFont(font);
+                            organiz.setFontColor(new DeviceRgb(0, 0, 0));
+                            organiz.setFontSize(16);
+                            organiz.setTextAlignment(TextAlignment.RIGHT);
+                            organiz.setBold();
+                            yg.put("Организация", organiz);
+                        }
+                    }
+                } else {
+                    s = doc.getFields().get(key_field);
+
+                    if (f) {
+                        Log.d("KHVYBIYV", yg.values().toString());
+                        document.add(yg.getOrDefault("Организация", new Paragraph()));
+                        document.add(yg.getOrDefault("Тип документа", new Paragraph()));
+                        document.add(yg.getOrDefault("Заголовок", new Paragraph()));
+                        document.add(yg.getOrDefault("Руководитель", new Paragraph()));
+                        document.add(yg.getOrDefault("Выполняющий", new Paragraph()));
+                        document.add(yg.getOrDefault("Место и год", new Paragraph()));
+                        document.getPdfDocument()
+                                .addNewPage(document.getPdfDocument().getNumberOfPages());
+                        f = false;
+                    }
+                    if (key_field.contains("Заголовок")) {
+                        int i = document.getPdfDocument().getNumberOfPages();
+                        document.getPdfDocument()
+                                .addNewPage(i);
+                        p = new Paragraph(s);
+                        p.setFont(font);
+                        p.setFontColor(new DeviceRgb(0, 0, 0));
+                        p.setFontSize(16);
+                        Log.e("ifdoidfg", String.valueOf(pdf.getNumberOfPages()));
+                        document.add(p);
+                    }
+                    if (key_field.contains("Подзаголовок")) {
+                        p = new Paragraph(s);
+                        p.setFont(font);
+                        p.setFontColor(new DeviceRgb(0, 0, 0));
+                        p.setFontSize(14);
+                        document.add(p);
+                    }
+                    if (key_field.contains("Абзац")) {
+                        p = new Paragraph(s);
+                        p.setFont(font);
+                        p.setFontColor(new DeviceRgb(0, 0, 0));
+                        p.setFontSize(12);
+                        document.add(p);
+                    }
                 }
             }
 
-            document.getPdfDocument()
-                    .addNewPage(2);
-            
+
             document.close();
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            Log.e("KJGih", e.getMessage());
+            Log.e("KJGih", e.getStackTrace().toString());
         }
 
         Toast.makeText(this, "Your PDF file is saved!", Toast.LENGTH_SHORT).show();
@@ -220,20 +334,22 @@ public class NewActivity extends AppCompatActivity implements View.OnClickListen
 
     private void saveToNet() {
 
-        authController.addDocumentGson(document, task -> {});
+        authController.addDocumentGson(document, task -> {
+        });
 
         authController.addDocument(document, task -> {
             if (task.isComplete()) {
                 Toast.makeText(this, "ydtfi;guhij", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 Toast.makeText(this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
-        authController.addDocumentStorage(document.getNameOfDocument() + ".pdf", Uri.fromFile(file), k -> {});
+        authController.addDocumentStorage(document.getNameOfDocument() + ".pdf", Uri.fromFile(file), k -> {
+        });
 
-        authController.addDocumentStorage(document.getNameOfDocument() + "_json.pdf", Uri.fromFile(file_gson), k -> {});
+        authController.addDocumentStorage(document.getNameOfDocument() + "_json.pdf", Uri.fromFile(file_gson), k -> {
+        });
     }
 
     private void saveDocument() {
@@ -267,30 +383,23 @@ public class NewActivity extends AppCompatActivity implements View.OnClickListen
         if (view == binding.titleRecyclerUp) {
             binding.recyclerToTitlePage.setVisibility(binding.recyclerToTitlePage.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
             binding.switcherDrop.showNext();
-        }
-        else if (view == binding.titleRecyclerDown) {
+        } else if (view == binding.titleRecyclerDown) {
             binding.recyclerToTitlePage.setVisibility(binding.recyclerToTitlePage.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
             binding.switcherDrop.showNext();
-        }
-        else if (view == binding.save) {
+        } else if (view == binding.save) {
             saveDocument();
             finish();
-        }
-        else if (view == binding.viewPDfF) {
+        } else if (view == binding.viewPDfF) {
             goToViewActivity();
-        }
-        else if (view == binding.add) {
+        } else if (view == binding.add) {
             binding.layoutAddHeader.setVisibility(binding.layoutAddHeader.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
             binding.layoutAddSubtitle.setVisibility(binding.layoutAddSubtitle.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
             binding.layoutAddTopic.setVisibility(binding.layoutAddTopic.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-        }
-        else if (view == binding.addHeader) {
+        } else if (view == binding.addHeader) {
             addField(View.GONE, "Заголовок", mainTextAdapter.getKeys().size());
-        }
-        else if (view == binding.addSubtitle) {
+        } else if (view == binding.addSubtitle) {
             addField(View.GONE, "Подзаголовок", mainTextAdapter.getKeys().size());
-        }
-        else if (view == binding.addTopic) {
+        } else if (view == binding.addTopic) {
             addField(View.GONE, "Абзац", mainTextAdapter.getKeys().size());
         }
     }
